@@ -1,7 +1,17 @@
 <template>
   <div id="form-area">
-    <textarea name="postform" rows="5" cols="50"></textarea>
-    <button type="button" v-on:click="fbwrite">button</button>
+    <select v-model="teamId" name="team" id="team">
+      <option v-for="item in teamId"
+        :value="item.id" 
+        :key="item.id">
+        {{item.label}}
+      </option>
+    </select>
+    <ul>
+      <li><label v-bind:class="selected" class="maru"><input type="radio" name="answer" value="ans1" v-model="selected"></label></li>
+      <li><label v-bind:class="selected" class="batsu"><input type="radio" name="answer" value="ans2" v-model="selected"></label></li>
+    </ul>
+    <button v-on:click="setAnswer">決定</button>
   </div>
 </template>
 
@@ -12,26 +22,47 @@
     getDocs,
     getFirestore,
     query,
-    onSnapshot
+    onSnapshot,
+    setDoc,
+    doc
   } from "firebase/firestore";
   export default {
     name: 'Input',
     data() {
       return {
         data: [],
+        teamId: [
+          { id: 'team1', label: 'team1' },
+          { id: 'team2', label: 'team2' },
+          { id: 'team3', label: 'team3' },
+          { id: 'team4', label: 'team4' },
+          { id: 'team5', label: 'team5' }
+        ],
+        selected: ''
       }
     },
     mounted: function () {
       const db = getFirestore(firebaseApp);
-      const q = query(collection(db, "team1"))
-      onSnapshot(q, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            if (change.type === 'added') {
-              console.log('added: ', change.doc.data())
-              
-            }
-          })
-      })
+      const docRef = collection(db, "stage1")
+      getDocs(docRef).then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          console.log(doc.id)
+          console.log(doc.data())
+        })
+      });
+
+      
+    },
+    methods: {
+      setAnswer: function() {
+        const db = getFirestore(firebaseApp);
+        const selected = this.selected == "ans1" ? "◯":"×"
+        const team = document.getElementById("team")
+        const ref = doc(db, "stage1", "team1")
+        const data = {answer: selected}
+
+        setDoc(ref, data)
+      }
     }
       
   }
@@ -42,19 +73,45 @@
   text-align: center;
   margin-top: 10px;
 }
-#form-area textarea {
-  padding: 5px;
-  border-radius: 5px;
+#form-area ul {
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+}
+#form-area li {
+  list-style-type: none;
+  
+  
+}
+#form-area li label {
+  background-repeat: no-repeat;
+  display: block;
+  width: 320px;
+  height: 320px;
+  background-position: center;
+  opacity: 0.2;
+}
+#form-area li label.maru {
+  background-image: url(../assets/maru.jpeg);
+}
+#form-area li label.batsu {
+  background-image: url(../assets/batsu.jpeg);
+  background-size: 90%;
+}
+#form-area li label.maru.ans1,
+#form-area li label.batsu.ans2 {
+  opacity: 1;
+}
+#form-area li label input {
+  display: none;
 }
 #form-area button {
-  display: block;
-  margin: 0 auto;
-  padding: 5px 10px;
-  font-size: 1.2rem;
-  border-radius: 5px;
-  background-color: rgb(57, 180, 108);
-  color: white;
-  cursor: pointer;
   width: 200px;
+  height: 80px;
+  font-size: 2em;
+  font-weight: bold;
 }
 </style>

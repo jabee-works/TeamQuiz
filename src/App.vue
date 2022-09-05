@@ -1,27 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <ul class="tab-menu-base">
-        <!-- `router.js` で定義したルーティングルールとの紐付けを行っている -->
-        <li><router-link to="/">Home</router-link></li>
-        <!-- *** -->
-        <!-- 省略 -->
-        <!-- *** -->
-        <li><router-link to="/routing">Rounting Test</router-link></li>
-      </ul>
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/answer">Answer</router-link> | 
+      <router-link to="/stage1">Stage1</router-link>
+    </div>
+    <router-view/>
+
   </div>
 </template>
 
 <script>
-// import Input from './components/Input.vue'
 
-// export default {
-//   name: 'app',
-//   components: {
-//     Input
-//   }
-// }
 </script>
+
 
 <style>
 #app {
