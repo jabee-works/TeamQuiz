@@ -1,12 +1,12 @@
 <template>
   <div id="form-area">
-    <select v-model="teamId" name="team" id="team">
-      <option v-for="item in teamId"
-        :value="item.id" 
-        :key="item.id">
-        {{item.label}}
+    <select id="teamselect" v-model="myteam">
+      <option></option>
+      <option v-for="team in teams" :key="team.name" :value="team.value">
+        {{team.name}}
       </option>
     </select>
+    <div class="team">Team: {{selectedItem}}</div>
     <ul>
       <li><label v-bind:class="selected" class="maru"><input type="radio" name="answer" value="ans1" v-model="selected"></label></li>
       <li><label v-bind:class="selected" class="batsu"><input type="radio" name="answer" value="ans2" v-model="selected"></label></li>
@@ -31,14 +31,20 @@
     data() {
       return {
         data: [],
-        teamId: [
-          { id: 'team1', label: 'team1' },
-          { id: 'team2', label: 'team2' },
-          { id: 'team3', label: 'team3' },
-          { id: 'team4', label: 'team4' },
-          { id: 'team5', label: 'team5' }
+        teams: [
+          {name: "モエール", value:"1"},
+          {name: "モエーナイ", value:"2"},
+          {name: "シーゲン", value:"3"},
+          {name: "ビン・カーン", value:"4"},
+          {name: "ボトルペット", value:"5"}
         ],
+        myteam: '',
         selected: ''
+      }
+    },
+    computed: {
+      selectedItem: function() {
+        return this.teams[Number(this.myteam) - 1].name;
       }
     },
     mounted: function () {
@@ -58,7 +64,7 @@
         const db = getFirestore(firebaseApp);
         const selected = this.selected == "ans1" ? "◯":"×"
         const team = document.getElementById("team")
-        const ref = doc(db, "stage1", "team1")
+        const ref = doc(db, "stage1", this.myteam)
         const data = {answer: selected}
 
         setDoc(ref, data)
@@ -113,5 +119,11 @@
   height: 80px;
   font-size: 2em;
   font-weight: bold;
+}
+
+#form-area .team {
+  font-size: 30px;
+  font-weight: bold;
+  color: blue;
 }
 </style>

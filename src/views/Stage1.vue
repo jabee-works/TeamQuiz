@@ -1,20 +1,20 @@
 <template>
   <div>
-    <h1>Stage1</h1>
+    <!-- <h1>Stage1</h1> -->
     <table>
       <tr>
-        <th>team1</th>
-        <th>team2</th>
-        <th>team3</th>
-        <th>team4</th>
-        <th>team5</th>
+        <th>モエール</th>
+        <th>モエーナイ</th>
+        <th>シーゲン</th>
+        <th>ビン・カーン</th>
+        <th>ボトルペット</th>
       </tr>
       <tr>
-        <td class="team1">{{answer.team1}}</td>
-        <td class="team2"></td>
-        <td class="team3"></td>
-        <td class="team4"></td>
-        <td class="team5"></td>
+        <td class="team1">{{answer["team1"]}}</td>
+        <td class="team2">{{answer["team2"]}}</td>
+        <td class="team3">{{answer["team3"]}}</td>
+        <td class="team4">{{answer["team4"]}}</td>
+        <td class="team5">{{answer["team5"]}}</td>
       </tr>
     </table>
   </div>
@@ -35,7 +35,9 @@ export default {
       answer: {
         team1: "",
         team2: "",
-        team3: ""
+        team3: "",
+        team4: "",
+        team5: ""
       }
     }
   },
@@ -44,9 +46,15 @@ export default {
 
     onSnapshot(collection(db, "stage1"), (snapshot) => {
       snapshot.docs.forEach(doc => {
-        this.answer[doc.id] = doc.data().answer;
+        this.answer["team" + doc.id] = doc.data().answer;
       })
     })
   }
 }
 </script>
+
+<style>
+table {
+  margin: 0 auto;
+}
+</style>
