@@ -10,11 +10,11 @@
         <th>ボトルペット</th>
       </tr>
       <tr>
-        <td class="team1">{{answer["team1"]}}</td>
-        <td class="team2">{{answer["team2"]}}</td>
-        <td class="team3">{{answer["team3"]}}</td>
-        <td class="team4">{{answer["team4"]}}</td>
-        <td class="team5">{{answer["team5"]}}</td>
+        <td class="sizelarge team1" :class="answer.team1">{{answer["team1"]}}</td>
+        <td class="sizelarge team2" :class="answer.team2">{{answer["team2"]}}</td>
+        <td class="sizelarge team3" :class="answer.team3">{{answer["team3"]}}</td>
+        <td class="sizelarge team4" :class="answer.team4">{{answer["team4"]}}</td>
+        <td class="sizelarge team5" :class="answer.team5">{{answer["team5"]}}</td>
       </tr>
     </table>
   </div>
@@ -56,5 +56,15 @@ export default {
 <style>
 table {
   margin: 0 auto;
+}
+.sizelarge {
+  font-size: 2em;
+  font-weight: bold;
+}
+.◯ {
+  color: red;
+}
+.× {
+  color: blue;
 }
 </style>
