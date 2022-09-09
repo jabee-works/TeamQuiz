@@ -38,7 +38,7 @@
           {name: "ビン・カーン", value:"4"},
           {name: "ボトルペット", value:"5"}
         ],
-        myteam: '',
+        myteam: '1',
         selected: ''
       }
     },
