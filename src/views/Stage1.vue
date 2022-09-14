@@ -42,11 +42,11 @@
         <td class="sizelarge team5" :class="answer.team5">{{answer["team5"]}}</td>
       </tr>
       <tr>
-        <td class="sizelarge rate" :class="answer.team1">{{rate["team1"]}} pt</td>
-        <td class="sizelarge rate" :class="answer.team2">{{rate["team2"]}} pt</td>
-        <td class="sizelarge rate" :class="answer.team3">{{rate["team3"]}} pt</td>
-        <td class="sizelarge rate" :class="answer.team4">{{rate["team4"]}} pt</td>
-        <td class="sizelarge rate" :class="answer.team5">{{rate["team5"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team1">Rate: {{rate["team1"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team2">Rate: {{rate["team2"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team3">Rate: {{rate["team3"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team4">Rate: {{rate["team4"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team5">Rate: {{rate["team5"]}} pt</td>
       </tr>
       <tr>
         <td class="sizelarge score1" :class="answer.team1">{{score["team1"]}} pt</td>
