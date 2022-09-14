@@ -11,6 +11,14 @@
       <li><label v-bind:class="selected" class="maru"><input type="radio" name="answer" value="ans1" v-model="selected"></label></li>
       <li><label v-bind:class="selected" class="batsu"><input type="radio" name="answer" value="ans2" v-model="selected"></label></li>
     </ul>
+    <div>
+      <select id="rate" v-model="myrate">
+        <option v-for="rate in rates" :key="rate.name" :value="rate.value">
+          {{rate.score}}
+        </option>
+      </select>
+      <div class="rate">Rate: {{myrate}}</div>
+    </div>
     <button v-on:click="setAnswer">決定</button>
   </div>
 </template>
@@ -39,7 +47,15 @@
           {name: "ボトルペット", value:"5"}
         ],
         myteam: '1',
-        selected: ''
+        selected: '',
+        myrate: '',
+        rates: [
+          {score: "100", value:"100"},
+          {score: "200", value:"200"},
+          {score: "300", value:"300"},
+          {score: "400", value:"400"},
+          {score: "500", value:"500"}
+        ],
       }
     },
     computed: {
@@ -68,6 +84,10 @@
         const data = {answer: selected}
 
         setDoc(ref, data)
+
+        const rateref = doc(db, "rate", "team" + this.myteam)
+        const ratedata = {rate: this.myrate}
+
       }
     }
       
@@ -102,10 +122,11 @@
 }
 #form-area li label.maru {
   background-image: url(../assets/maru.jpeg);
+  background-size: 60%;
 }
 #form-area li label.batsu {
   background-image: url(../assets/batsu.jpeg);
-  background-size: 90%;
+  background-size: 50%;
 }
 #form-area li label.maru.ans1,
 #form-area li label.batsu.ans2 {
@@ -122,7 +143,24 @@
 }
 
 #form-area .team {
-  font-size: 30px;
+  font-size: 3em;
+  font-weight: bold;
+  color: blue;
+}
+
+select {
+  font-size: 2em;
+  width: 400px;
+  text-align: center;
+  margin: 20px 0;
+}
+select#teamselect {
+  font-size: 1.5em;
+  widows: 200px;
+}
+
+#form-area .rate {
+  font-size: 3em;
   font-weight: bold;
   color: blue;
 }

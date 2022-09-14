@@ -1,6 +1,19 @@
 <template>
   <div>
     <!-- <h1>Stage1</h1> -->
+
+    <select id="quiz" v-model="myquiz">
+      <option></option>
+      <option v-for="quiz in quizs" :key="quiz.name" :value="quiz.value">
+        {{quiz.name}}
+      </option>
+    </select>
+    <button id="answer" type="button" v-on:click="getAnswer">正解は!?</button>
+
+    <div class="setAnswer">
+      {{setAnswer}}
+    </div>
+
     <table>
       <tr>
         <th>モエール</th>
@@ -16,6 +29,13 @@
         <td class="sizelarge team4" :class="answer.team4">{{answer["team4"]}}</td>
         <td class="sizelarge team5" :class="answer.team5">{{answer["team5"]}}</td>
       </tr>
+      <tr>
+        <td class="sizelarge score1" :class="answer.team1">{{score["team1"]}}</td>
+        <td class="sizelarge score2" :class="answer.team2">{{score["team2"]}}</td>
+        <td class="sizelarge score3" :class="answer.team3">{{score["team3"]}}</td>
+        <td class="sizelarge score4" :class="answer.team4">{{score["team4"]}}</td>
+        <td class="sizelarge score5" :class="answer.team5">{{score["team5"]}}</td>
+      </tr>
     </table>
   </div>
 </template>
@@ -26,19 +46,95 @@ import {
   collection,
   getDocs,
   getFirestore,
-  onSnapshot
+  onSnapshot,
+  setDoc,
+  doc
 } from "firebase/firestore";
 export default {
   data() {
     return {
       data: [],
+      myquiz: "",
       answer: {
         team1: "",
         team2: "",
         team3: "",
         team4: "",
         team5: ""
-      }
+      },
+      score: {
+        team1: "",
+        team2: "",
+        team3: "",
+        team4: "",
+        team5: ""
+      },
+      rate: {
+        team1: "",
+        team2: "",
+        team3: "",
+        team4: "",
+        team5: ""
+      },
+      quizs: [
+        {name: "quiz1", value:"1"},
+        {name: "quiz2", value:"2"},
+        {name: "quiz3", value:"3"},
+        {name: "quiz4", value:"4"},
+        {name: "quiz5", value:"5"},
+        {name: "quiz6", value:"6"},
+        {name: "quiz7", value:"7"},
+        {name: "quiz8", value:"8"},
+        {name: "quiz9", value:"9"},
+        {name: "quiz10", value:"10"}
+      ],
+      setAnswer: ""
+    }
+  },
+  computed: {
+    selectedItem: function() {
+      return this.quizs[Number(this.myquiz) - 1].name;
+    }
+  },
+  methods: {
+    getAnswer: function() {
+      const db = getFirestore(firebaseApp);
+      const docRef = collection(db, "quiz")
+      let setAnswer = this.setAnswer
+      getDocs(docRef).then(snapshot => {
+        snapshot.docs.forEach(doc => {
+           setAnswer = doc.data()[this.myquiz]
+           this.setAnswer = setAnswer
+        })
+
+        const answer = this.answer
+        Object.keys(answer).forEach(function(key, value) {
+          if(setAnswer == answer[key]) {
+            const docRefScore = collection(db, "team")
+            getDocs(docRefScore).then(snapshot => {
+              snapshot.docs.forEach(getdoc => {
+                // console.log(key)
+                // console.log(doc.id)
+                // console.log(doc.data())
+                if(key == getdoc.id) {
+                  let score = +getdoc.data().score
+
+                  let point = 100
+
+                  const ref = doc(db, "team", "team" + (+value + 1))
+                  const data = {score: +score + point}
+
+                  setDoc(ref, data)
+                }
+                
+              })
+            });
+          
+          }
+        })
+      });
+
+      
     }
   },
   mounted: function () {
@@ -49,6 +145,12 @@ export default {
         this.answer["team" + doc.id] = doc.data().answer;
       })
     })
+
+    onSnapshot(collection(db, "team"), (snapshot) => {
+      snapshot.docs.forEach(doc => {
+        this.score[doc.id] = doc.data().score;
+      })
+    })
   }
 }
 </script>
@@ -56,6 +158,15 @@ export default {
 <style>
 table {
   margin: 0 auto;
+  width: 1200px;
+}
+th {
+  font-size: 2em;
+}
+
+td {
+  border: 1px solid;
+  width: 20%;
 }
 .sizelarge {
   font-size: 2em;
@@ -66,5 +177,18 @@ table {
 }
 .× {
   color: blue;
+}
+
+.setAnswer {
+  height: 200px;
+}
+
+.score1, .score2, .score3, .score4, .score5 {
+  color: black;
+}
+
+.setAnswer {
+  font-size: 10em;
+  font-weight: bold;
 }
 </style>
