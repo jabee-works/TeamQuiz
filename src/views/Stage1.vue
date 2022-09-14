@@ -137,8 +137,10 @@ export default {
           // 加算スコア
           let plus_rate = setAnswer == answer[key] ? +rate[key] : -rate[key]
 
+          let score = (now_score + plus_rate) >= 0 ? (now_score + plus_rate) : 0
+
           const ref = doc(db, "team", key)
-          const data = {score: now_score + plus_rate}
+          const data = {score: score}
 
           setDoc(ref, data)
           

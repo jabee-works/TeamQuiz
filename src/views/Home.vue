@@ -36,7 +36,7 @@ export default {
 
         for(var k = 0; k < 5; k++) {
           const ref = doc(db, "team", "team" + (k + 1))
-          const data = {score: 0}
+          const data = {score: 1000}
 
           setDoc(ref, data)
         }
