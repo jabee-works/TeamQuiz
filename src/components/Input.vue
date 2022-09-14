@@ -48,7 +48,7 @@
         ],
         myteam: '1',
         selected: '',
-        myrate: '',
+        myrate: '100',
         rates: [
           {score: "100", value:"100"},
           {score: "200", value:"200"},
@@ -87,6 +87,8 @@
 
         const rateref = doc(db, "rate", "team" + this.myteam)
         const ratedata = {rate: this.myrate}
+
+        setDoc(rateref, ratedata)
 
       }
     }

@@ -30,11 +30,18 @@
         <td class="sizelarge team5" :class="answer.team5">{{answer["team5"]}}</td>
       </tr>
       <tr>
-        <td class="sizelarge score1" :class="answer.team1">{{score["team1"]}}</td>
-        <td class="sizelarge score2" :class="answer.team2">{{score["team2"]}}</td>
-        <td class="sizelarge score3" :class="answer.team3">{{score["team3"]}}</td>
-        <td class="sizelarge score4" :class="answer.team4">{{score["team4"]}}</td>
-        <td class="sizelarge score5" :class="answer.team5">{{score["team5"]}}</td>
+        <td class="sizelarge rate" :class="answer.team1">{{rate["team1"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team2">{{rate["team2"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team3">{{rate["team3"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team4">{{rate["team4"]}} pt</td>
+        <td class="sizelarge rate" :class="answer.team5">{{rate["team5"]}} pt</td>
+      </tr>
+      <tr>
+        <td class="sizelarge score1" :class="answer.team1">{{score["team1"]}} pt</td>
+        <td class="sizelarge score2" :class="answer.team2">{{score["team2"]}} pt</td>
+        <td class="sizelarge score3" :class="answer.team3">{{score["team3"]}} pt</td>
+        <td class="sizelarge score4" :class="answer.team4">{{score["team4"]}} pt</td>
+        <td class="sizelarge score5" :class="answer.team5">{{score["team5"]}} pt</td>
       </tr>
     </table>
   </div>
@@ -108,27 +115,21 @@ export default {
         })
 
         const answer = this.answer
+        const score = this.score
+        const rate = this.rate
         Object.keys(answer).forEach(function(key, value) {
           if(setAnswer == answer[key]) {
-            const docRefScore = collection(db, "team")
-            getDocs(docRefScore).then(snapshot => {
-              snapshot.docs.forEach(getdoc => {
-                // console.log(key)
-                // console.log(doc.id)
-                // console.log(doc.data())
-                if(key == getdoc.id) {
-                  let score = +getdoc.data().score
+            // スコア加算
+            // 現在スコア
+            let now_score = +score[key]
 
-                  let point = 100
+            // 加算スコア
+            let plus_rate = +rate[key]
 
-                  const ref = doc(db, "team", "team" + (+value + 1))
-                  const data = {score: +score + point}
+            const ref = doc(db, "team", key)
+            const data = {score: now_score + plus_rate}
 
-                  setDoc(ref, data)
-                }
-                
-              })
-            });
+            setDoc(ref, data)
           
           }
         })
@@ -149,6 +150,12 @@ export default {
     onSnapshot(collection(db, "team"), (snapshot) => {
       snapshot.docs.forEach(doc => {
         this.score[doc.id] = doc.data().score;
+      })
+    })
+
+    onSnapshot(collection(db, "rate"), (snapshot) => {
+      snapshot.docs.forEach(doc => {
+        this.rate[doc.id] = doc.data().rate;
       })
     })
   }
@@ -184,6 +191,11 @@ td {
 }
 
 .score1, .score2, .score3, .score4, .score5 {
+  color: black;
+  font-size: 3em;
+}
+
+.rate {
   color: black;
 }
 
