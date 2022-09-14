@@ -122,11 +122,10 @@
 }
 #form-area li label.maru {
   background-image: url(../assets/maru.jpeg);
-  background-size: 60%;
 }
 #form-area li label.batsu {
   background-image: url(../assets/batsu.jpeg);
-  background-size: 50%;
+  background-size: 90%;
 }
 #form-area li label.maru.ans1,
 #form-area li label.batsu.ans2 {
@@ -150,13 +149,13 @@
 
 select {
   font-size: 2em;
-  width: 400px;
+  /* width: 100px; */
   text-align: center;
   margin: 20px 0;
 }
 select#teamselect {
   font-size: 1.5em;
-  widows: 200px;
+  /* widows: 100px; */
 }
 
 #form-area .rate {
