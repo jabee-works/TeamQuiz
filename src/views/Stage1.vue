@@ -2,6 +2,18 @@
   <div>
     <!-- <h1>Stage1</h1> -->
 
+    <div>
+      <video v-if="myquiz==1" src="../assets/q1.mp4" controls></video>
+      <video v-if="myquiz==2" src="../assets/q2.mp4" controls></video>
+      <video v-if="myquiz==3" src="../assets/q3.mp4" controls></video>
+      <video v-if="myquiz==4" src="../assets/q4.mp4" controls></video>
+      <video v-if="myquiz==5" src="../assets/q5.mp4" controls></video>
+      <video v-if="myquiz==6" src="../assets/q6.mp4" controls></video>
+      <video v-if="myquiz==7" src="../assets/q7.mp4" controls></video>
+      <video v-if="myquiz==8" src="../assets/q8.mp4" controls></video>
+      <video v-if="myquiz==9" src="../assets/q9.mp4" controls></video>
+      <video v-if="myquiz==10" src="../assets/q10.mp4" controls></video>
+    </div>
     <select id="quiz" v-model="myquiz">
       <option></option>
       <option v-for="quiz in quizs" :key="quiz.name" :value="quiz.value">
@@ -118,20 +130,18 @@ export default {
         const score = this.score
         const rate = this.rate
         Object.keys(answer).forEach(function(key, value) {
-          if(setAnswer == answer[key]) {
-            // スコア加算
-            // 現在スコア
-            let now_score = +score[key]
+          // スコア加算
+          // 現在スコア
+          let now_score = +score[key]
 
-            // 加算スコア
-            let plus_rate = +rate[key]
+          // 加算スコア
+          let plus_rate = setAnswer == answer[key] ? +rate[key] : -rate[key]
 
-            const ref = doc(db, "team", key)
-            const data = {score: now_score + plus_rate}
+          const ref = doc(db, "team", key)
+          const data = {score: now_score + plus_rate}
 
-            setDoc(ref, data)
+          setDoc(ref, data)
           
-          }
         })
       });
 
@@ -163,6 +173,10 @@ export default {
 </script>
 
 <style>
+
+video {
+  width: 1000px;
+}
 table {
   margin: 0 auto;
   width: 1200px;
