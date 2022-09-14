@@ -1,5 +1,10 @@
 <template>
+
   <div class="home">
+    <div>
+      回答用ページ<br>
+      <img src="../assets/qr.png"></img>
+    </div>
     <button class="reset" type="button" v-on:click="reset">reset all</button>
   </div>
 </template>
