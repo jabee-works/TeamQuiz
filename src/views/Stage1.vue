@@ -14,7 +14,7 @@
       <video v-if="myquiz==9" src="../assets/q9.mp4" controls></video>
       <video v-if="myquiz==10" src="../assets/q10.mp4" controls></video>
     </div>
-    <select id="quiz" v-model="myquiz">
+    <select id="quiz" v-model="myquiz" v-on:change="answerReset">
       <option></option>
       <option v-for="quiz in quizs" :key="quiz.name" :value="quiz.value">
         {{quiz.name}}
@@ -137,7 +137,7 @@ export default {
           // 加算スコア
           let plus_rate = setAnswer == answer[key] ? +rate[key] : -rate[key]
 
-          let totalscore = (now_score + plus_rate) >= 0 ? (now_score + plus_rate) : 0;
+          let totalscore = (now_score + plus_rate)
           
 
           const ref = doc(db, "team", key)
@@ -147,8 +147,9 @@ export default {
           
         })
       });
-
-      
+    },
+    answerReset: function() {
+      this.setAnswer = ""
     }
   },
   mounted: function () {
